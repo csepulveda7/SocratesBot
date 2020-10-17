@@ -4,7 +4,7 @@ from random import randrange
 from tweet import *
 
 app = Flask(__name__)
-gc = gspread.service_account(filename='app\gsheet_credentials.json')
+gc = gspread.service_account(filename='gsheet_credentials.json')
 sh = gc.open_by_key('1SbPgsCba39nGz5-vNF6b3q8Qn_12D92TxSizIFtfYmw')
 worksheet = sh.sheet1
 
