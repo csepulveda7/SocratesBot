@@ -9,6 +9,7 @@ load_dotenv()
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
+import logging
 import time
 import csv
 import sys
@@ -38,10 +39,41 @@ class StdOutListener(StreamListener):
         if not 'RT @' in status.text:
             # Try to 
             try:
-                response_list = get_response_list()
-                response = get_response(response_list) + " @" + status.user.screen_name
-                api.update_status(response, status.id)
-                print(response + " " + str(status.id))
+                if status.text == '!SocratesJoin':
+                    response = "Hello there! Let's start a #HealthyConverstation \nHow can I be of service? @" + status.user.screen_name
+                    api.update_status(response, status.id)
+
+                    user_name = "@csepulveda3211"
+                    replies = tweepy.Cursor(api.search, q='to:{}'.format(user_name), since_id=status.id, tweet_mode='extended').items()
+
+                    while True:
+                        reply = replies.next()
+                        if not hasattr(reply, 'in_reply_to_status_id_str'):
+                            continue
+                        if str(reply.in_reply_to_status_id) == status.id:
+                            print("reply of tweet:{}".format(reply.text))
+
+                        if status.text == '!SocratesHelp':
+                            response = "Let's dig deep, healthy conversations aren't always the easiest, but that's what I'm here for. Let's make some friends and open our minds. In the end, we are not truly strangers after all. @" + status.user.screen_name
+                            api.update_status(response, status.id)
+                        
+                        elif status.text == '!AskQuestion':
+                            response_list = get_response_list()
+                            response = get_response(response_list) + " @" + status.user.screen_name
+                            api.update_status(response, status.id)
+                
+                        elif status.text == '!SuggestTopic':
+                            response_list = get_response_list()
+                            response = get_response(response_list) + " @" + status.user.screen_name
+                            api.update_status(response, status.id)
+                
+                        
+                        if status.text == '!EndSession':
+                            response = "Goodbye friends. @" + status.user.screen_name
+                            api.update_status(response, status.id)
+
+                            break
+                            
             # If some error occurs
             except Exception as e:
                 # Print the error

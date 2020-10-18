@@ -12,6 +12,6 @@ def initializeBot():
     #daily_post(response_list)
     
     # Start tweet stream miner
-    start_mining(['!SocratesHelp'])
+    start_mining(['!SocratesJoin','!SocratesHelp','!AskQuestion', '!SuggestTopic'])
 
     return "epic"
