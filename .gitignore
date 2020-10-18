@@ -2,4 +2,5 @@
 ########################
 *.env
 *.json
-venv/
+**/venv
+.DS_Store
